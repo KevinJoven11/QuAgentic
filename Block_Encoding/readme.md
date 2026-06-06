@@ -18,5 +18,5 @@ Future improvements:
 The following figure is the current workflow. Still missing different implementations.
 
 <div align="center">
-    <img src="images/be_v1.png" width="600">
+    <img src="images/be_v1.jpg" width="600">
 </div>
