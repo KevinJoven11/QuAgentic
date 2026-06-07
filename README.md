@@ -12,6 +12,10 @@ Therefore, this repository will help me, and likely to more people, to get a pra
 
 To ensemble a general AI agent that connects single AI agents to orchestrate a completely quantum simulation workflow end-to-end. 
 
+<div align="center">
+    <img src="images/main.png" width="600">
+</div>
+
 ## References:
 
 This is not a new idea, and many different efforst have been done in this combination. But the field is quite new and a pedagogical explanation will be useful (I know!).
