@@ -8,6 +8,10 @@ Therefore, this repository will help me, and likely to more people, to get a pra
 -  Agent for efficient Block Encodings. 
 -  Agent for finding practical problems and been solvable using near-term hardware.
 
+## Main contribution
+
+To ensemble a general AI agent that connects single AI agents to orchestrate a completely quantum simulation workflow end-to-end. 
+
 ## References:
 
 This is not a new idea, and many different efforst have been done in this combination. But the field is quite new and a pedagogical explanation will be useful (I know!).
