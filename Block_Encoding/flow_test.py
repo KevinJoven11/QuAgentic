@@ -7,9 +7,10 @@ os.makedirs(
     exist_ok=True
 )
 
-# importa tus funciones
 from block_encoding import (
-    approximate_block_encoding
+    approximate_block_encoding,
+    approximate_block_encoding_v2,
+    count_parameters
 )
 
 from database import (
@@ -17,6 +18,8 @@ from database import (
     save_experiment,
     show_experiments
 )
+
+### import all the functions.
 
 def extract_block(U, H):
     d = H.shape[0]
@@ -41,8 +44,21 @@ def objective(params, H, num_layers):
 
     n_system = int(np.log2(H.shape[0]))
     n_total = n_system + 1
-    theta_y, theta_x = unpack_params( params, num_layers, n_total )
-    U = approximate_block_encoding( H, num_layers, theta_y, theta_x )
+    #theta_y, theta_x = unpack_params( params, num_layers, n_total )
+    ansatz = [
+        "H",
+        "RY",
+        "RX",
+        "CNOT"
+    ]
+    #U = approximate_block_encoding( H, num_layers, theta_y, theta_x )
+    #param = count_parameters( ansatz, num_layers, n_total)
+    U = approximate_block_encoding_v2(
+        H,
+        num_layers,
+        ansatz,
+        params
+    )
     return cost_function( U, H )
 
 def load_matrix(path):
@@ -51,6 +67,8 @@ def load_matrix(path):
 def extract_block(U, H):
     d = H.shape[0]
     return U[:d,:d]
+
+### Main call
 
 if __name__ == "__main__":
 
@@ -61,7 +79,7 @@ if __name__ == "__main__":
     print("Input matrix:")
     print(H)
 
-    num_layers = 5
+    num_layers = 6
 
     num_qubits = int(np.log2(H.shape[0]))
     n_total = num_qubits + 1

@@ -78,3 +78,112 @@ def approximate_block_encoding( H, num_layers, theta_y, theta_x):
             U = cnot(q, q+1, n_total) @ U
 
     return U
+
+##### modification
+
+def count_parameters(
+    ansatz,
+    num_layers,
+    n_total
+):
+
+    count = 0
+
+    for gate in ansatz:
+
+        if gate in ["RX", "RY", "RZ"]:
+
+            count += n_total
+
+    return count * num_layers
+
+def approximate_block_encoding_v2(
+    H,
+    num_layers,
+    ansatz,
+    parameters
+):
+    
+    num_qubits = int(np.log2(H.shape[0]))
+    n_total = num_qubits + 1
+
+    U = np.eye(
+        2**n_total,
+        dtype=complex
+    )
+
+    param_idx = 0
+
+    for layer in range(num_layers):
+
+        for gate in ansatz:
+
+            # Hadamard
+            if gate == "H":
+
+                for q in range(n_total):
+
+                    U = (
+                        single_qubit_gate(
+                            Hadamard(),
+                            q,
+                            n_total
+                        )
+                        @ U
+                    )
+
+            # Ry
+            elif gate == "RY":
+
+                for q in range(n_total):
+
+                    theta = parameters[param_idx]
+                    param_idx += 1
+
+                    U = (
+                        single_qubit_gate(
+                            Ry(theta),
+                            q,
+                            n_total
+                        )
+                        @ U
+                    )
+
+            # Rx
+            elif gate == "RX":
+
+                for q in range(n_total):
+
+                    theta = parameters[param_idx]
+                    param_idx += 1
+
+                    U = (
+                        single_qubit_gate(
+                            Rx(theta),
+                            q,
+                            n_total
+                        )
+                        @ U
+                    )
+
+            # CNOT chain
+            elif gate == "CNOT":
+
+                for q in range(n_total-1):
+
+                    U = (
+                        cnot(
+                            q,
+                            q+1,
+                            n_total
+                        )
+                        @ U
+                    )
+
+            else:
+
+                raise ValueError(
+                    f"Unknown gate {gate}"
+                )
+
+    return U
